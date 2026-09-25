@@ -171,7 +171,7 @@ async def resolve_ticket(ticket_id: int, db: AsyncSession = Depends(get_db), cur
     return ticket
 
 @router.post("/{ticket_id}/close", response_model=TicketResponse)
-async def close_ticket(ticket_id: int, db: AsyncSession = Depends(get_db), current_agent: User = Depends(get_current_agent)):
+async def close_ticket(ticket_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     result = await db.execute(select(Ticket).where(Ticket.id == ticket_id))
     ticket = result.scalars().first()
     if not ticket:
