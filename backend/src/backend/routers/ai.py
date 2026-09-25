@@ -31,15 +31,22 @@ async def suggest_ai_draft(ticket_id: int, db: AsyncSession = Depends(get_db)):
             draft="Không tìm thấy tài liệu liên quan, vui lòng phản hồi thủ công"
         )
         
-    draft_text = await generate_ai_draft(ticket.description, articles)
-    
-    if draft_text == "NO_MATCH":
+    try:
+        draft_text = await generate_ai_draft(ticket.description, articles)
+        
+        if draft_text == "NO_MATCH":
+            return AIDraftResponse(
+                status="no_match",
+                draft="Không tìm thấy tài liệu liên quan, vui lòng phản hồi thủ công"
+            )
+        
         return AIDraftResponse(
-            status="no_match",
-            draft="Không tìm thấy tài liệu liên quan, vui lòng phản hồi thủ công"
+            status="success",
+            draft=draft_text
         )
-    
-    return AIDraftResponse(
-        status="success",
-        draft=draft_text
-    )
+    except Exception as e:
+        # Fallback gracefully if AI crashes
+        return AIDraftResponse(
+            status="error",
+            draft="Xin lỗi, hệ thống AI đang quá tải hoặc gặp sự cố kỹ thuật. Vui lòng thử lại sau."
+        )
