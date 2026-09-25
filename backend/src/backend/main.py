@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
-from .routers import tickets, ai, sla, kb
+from .routers import tickets, ai, sla, kb, auth
 import os
 from fastapi.staticfiles import StaticFiles
 
@@ -35,6 +35,7 @@ app.include_router(tickets.router)
 app.include_router(ai.router)
 app.include_router(sla.router)
 app.include_router(kb.router)
+app.include_router(auth.router)
 
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 

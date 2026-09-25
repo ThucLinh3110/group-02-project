@@ -1,22 +1,36 @@
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import { TicketIcon, LayoutDashboard, Library, User, Bot, ShieldAlert } from 'lucide-react';
+import { TicketIcon, LayoutDashboard, Library, LogOut, Bot, ShieldAlert } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import CreateTicket from './pages/CreateTicket';
 import TicketDetail from './pages/TicketDetail';
 import KBPage from './pages/KBPage';
 import MyTickets from './pages/MyTickets';
-import { RoleProvider, useRole } from './context/RoleContext';
+import Login from './pages/Login';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 function AppContent() {
-  const { currentRole, setCurrentRole } = useRole();
-  const isAgent = currentRole === 'AGENT';
+  const { user, logout, isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </Router>
+    );
+  }
+
+  const isAgent = user?.role === 'Agent';
 
   return (
     <Router>
       <div className="flex h-screen bg-gray-50">
         {/* Sidebar */}
         <div className="w-64 bg-slate-900 text-white flex flex-col">
-          <div className="p-4 text-xl font-bold border-b border-slate-700">
+          <div className="p-4 text-xl font-bold border-b border-slate-700 flex items-center gap-2">
+            <Bot size={24} className="text-indigo-400" />
             AI Helpdesk
           </div>
           <nav className="flex-1 p-4 space-y-2">
@@ -39,6 +53,24 @@ function AppContent() {
               </>
             )}
           </nav>
+          
+          <div className="p-4 border-t border-slate-700">
+             <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+                   {user?.full_name?.charAt(0) || 'U'}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold truncate w-36" title={user?.full_name}>{user?.full_name}</p>
+                  <p className="text-xs text-slate-400">{isAgent ? 'IT Agent' : 'Nhân Viên'}</p>
+                </div>
+             </div>
+             <button 
+                onClick={logout}
+                className="flex items-center justify-center gap-2 w-full p-2 text-sm text-red-400 bg-slate-800/50 hover:bg-red-500 hover:text-white rounded-lg transition-all"
+             >
+                <LogOut size={16} /> Đăng xuất
+             </button>
+          </div>
         </div>
 
         {/* Main Content */}
@@ -47,23 +79,6 @@ function AppContent() {
             <h1 className="text-xl font-semibold text-gray-800">
               {isAgent ? 'Không gian làm việc (IT)' : 'Cổng hỗ trợ Nhân Viên'}
             </h1>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500 font-medium">Chuyển vai trò (Test):</span>
-              <div className="flex bg-slate-100 p-1 rounded-lg">
-                <button 
-                  onClick={() => setCurrentRole('EMPLOYEE')}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-semibold transition-all ${!isAgent ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  <User size={16} /> Nhân Viên
-                </button>
-                <button 
-                  onClick={() => setCurrentRole('AGENT')}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-semibold transition-all ${isAgent ? 'bg-indigo-600 shadow-sm text-white' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  <Bot size={16} /> IT Agent
-                </button>
-              </div>
-            </div>
           </header>
           
           <main className="p-6">
@@ -89,6 +104,7 @@ function AppContent() {
               )}
               <Route path="/tickets/new" element={<CreateTicket />} />
               <Route path="/tickets/:id" element={<TicketDetail />} />
+              <Route path="*" element={<Navigate to={isAgent ? '/' : '/my-tickets'} replace />} />
             </Routes>
           </main>
         </div>
@@ -99,9 +115,9 @@ function AppContent() {
 
 function App() {
   return (
-    <RoleProvider>
+    <AuthProvider>
       <AppContent />
-    </RoleProvider>
+    </AuthProvider>
   );
 }
 

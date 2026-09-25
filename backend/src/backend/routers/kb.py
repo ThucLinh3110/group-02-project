@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Query, Header
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import or_
@@ -7,6 +7,7 @@ from sqlalchemy import or_
 from ..database import get_db
 from ..models import Article
 from ..schemas import ArticleResponse, ArticleCreate, ArticleUpdate
+from .auth import get_current_agent
 
 router = APIRouter(prefix="/api/kb", tags=["kb"])
 
@@ -35,10 +36,7 @@ async def get_article(article_id: int, db: AsyncSession = Depends(get_db)):
     return article
 
 @router.post("", response_model=ArticleResponse)
-async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
-    if x_role != "AGENT":
-        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền tạo bài viết")
-    
+async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends(get_db), current_agent = Depends(get_current_agent)):
     new_article = Article(
         title=article_data.title,
         category=article_data.category,
@@ -50,9 +48,7 @@ async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends
     return new_article
 
 @router.put("/{article_id}", response_model=ArticleResponse)
-async def update_article(article_id: int, article_data: ArticleUpdate, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
-    if x_role != "AGENT":
-        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền sửa bài viết")
+async def update_article(article_id: int, article_data: ArticleUpdate, db: AsyncSession = Depends(get_db), current_agent = Depends(get_current_agent)):
     result = await db.execute(select(Article).where(Article.id == article_id))
     article = result.scalars().first()
     if not article:
@@ -67,9 +63,7 @@ async def update_article(article_id: int, article_data: ArticleUpdate, db: Async
     return article
 
 @router.delete("/{article_id}")
-async def delete_article(article_id: int, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
-    if x_role != "AGENT":
-        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền xóa bài viết")
+async def delete_article(article_id: int, db: AsyncSession = Depends(get_db), current_agent = Depends(get_current_agent)):
     result = await db.execute(select(Article).where(Article.id == article_id))
     article = result.scalars().first()
     if not article:

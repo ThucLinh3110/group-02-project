@@ -5,7 +5,7 @@ import type { TicketDetail as ITicketDetail, Message } from '../types';
 import { MessageRole, TicketStatus } from '../types';
 import SLABadge from '../components/SLABadge';
 import { Send, Bot, User, ShieldAlert, Sparkles, X, Loader2, Edit2, Check, X as XIcon } from 'lucide-react';
-import { useRole } from '../context/RoleContext';
+import { useAuth } from '../context/AuthContext';
 import { TicketCategory, TicketPriority } from '../types';
 
 const TicketDetail: React.FC = () => {
@@ -18,7 +18,8 @@ const TicketDetail: React.FC = () => {
   const [editCategory, setEditCategory] = useState<TicketCategory | ''>('');
   const [editPriority, setEditPriority] = useState<TicketPriority | ''>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { currentRole } = useRole();
+  const { user } = useAuth();
+  const currentRole = user?.role === 'Agent' ? 'AGENT' : 'EMPLOYEE';
   const isAgent = currentRole === 'AGENT';
 
   const fetchTicket = async () => {
