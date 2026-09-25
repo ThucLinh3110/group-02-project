@@ -9,7 +9,19 @@ export const apiClient = axios.create({
     },
 });
 
+apiClient.interceptors.request.use((config) => {
+    const role = localStorage.getItem('user_role') || 'EMPLOYEE';
+    config.headers['X-Role'] = role;
+    return config;
+});
+
 // For multipart/form-data
 export const uploadClient = axios.create({
     baseURL: API_URL,
+});
+
+uploadClient.interceptors.request.use((config) => {
+    const role = localStorage.getItem('user_role') || 'EMPLOYEE';
+    config.headers['X-Role'] = role;
+    return config;
 });

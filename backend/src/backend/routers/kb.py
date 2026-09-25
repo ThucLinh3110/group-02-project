@@ -1,5 +1,5 @@
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import or_
@@ -35,8 +35,10 @@ async def get_article(article_id: int, db: AsyncSession = Depends(get_db)):
     return article
 
 @router.post("", response_model=ArticleResponse)
-async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends(get_db)):
-    # In a real app, RBAC checks (Admin/Manager role) would be handled by dependencies
+async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
+    if x_role != "AGENT":
+        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền tạo bài viết")
+    
     new_article = Article(
         title=article_data.title,
         category=article_data.category,
@@ -48,7 +50,9 @@ async def create_article(article_data: ArticleCreate, db: AsyncSession = Depends
     return new_article
 
 @router.put("/{article_id}", response_model=ArticleResponse)
-async def update_article(article_id: int, article_data: ArticleUpdate, db: AsyncSession = Depends(get_db)):
+async def update_article(article_id: int, article_data: ArticleUpdate, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
+    if x_role != "AGENT":
+        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền sửa bài viết")
     result = await db.execute(select(Article).where(Article.id == article_id))
     article = result.scalars().first()
     if not article:
@@ -63,7 +67,9 @@ async def update_article(article_id: int, article_data: ArticleUpdate, db: Async
     return article
 
 @router.delete("/{article_id}")
-async def delete_article(article_id: int, db: AsyncSession = Depends(get_db)):
+async def delete_article(article_id: int, db: AsyncSession = Depends(get_db), x_role: str = Header(default="EMPLOYEE")):
+    if x_role != "AGENT":
+        raise HTTPException(status_code=403, detail="Forbidden: Chỉ IT Agent mới có quyền xóa bài viết")
     result = await db.execute(select(Article).where(Article.id == article_id))
     article = result.scalars().first()
     if not article:

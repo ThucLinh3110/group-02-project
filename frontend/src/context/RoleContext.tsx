@@ -10,8 +10,15 @@ interface RoleContextProps {
 const RoleContext = createContext<RoleContextProps | undefined>(undefined);
 
 export const RoleProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Mặc định là EMPLOYEE
-  const [currentRole, setCurrentRole] = useState<Role>('EMPLOYEE');
+  // Khôi phục role từ localStorage nếu có, mặc định là EMPLOYEE
+  const [currentRole, setRoleState] = useState<Role>(() => {
+    return (localStorage.getItem('user_role') as Role) || 'EMPLOYEE';
+  });
+
+  const setCurrentRole = (role: Role) => {
+    localStorage.setItem('user_role', role);
+    setRoleState(role);
+  };
 
   return (
     <RoleContext.Provider value={{ currentRole, setCurrentRole }}>
