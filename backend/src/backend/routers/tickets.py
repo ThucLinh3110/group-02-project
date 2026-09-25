@@ -24,7 +24,8 @@ async def create_ticket(
     title: str = Form(...),
     description: str = Form(...),
     files: List[UploadFile] = File([]),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(get_current_user)
 ):
     if len(files) > 5:
         raise HTTPException(status_code=400, detail="Chỉ cho phép đính kèm tối đa 5 ảnh.")

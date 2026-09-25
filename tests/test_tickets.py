@@ -68,7 +68,7 @@ async def test_create_ticket_without_auth(async_client: AsyncClient, mock_ai_tri
             "description": (None, "Lỗi rùi")
         }
     )
-    assert response.status_code == 200
+    assert response.status_code == 401
 
 @pytest.mark.asyncio
 async def test_customer_cannot_update_priority_rule(async_client: AsyncClient, customer_token: str, agent_token: str):
