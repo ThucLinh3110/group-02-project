@@ -32,7 +32,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const filteredTickets = tickets.filter(t => {
-    if (filter === 'all') return t.status !== 'Closed' && t.status !== 'Resolved';
+    if (filter === 'all') return true;
     if (filter === 'done') return t.status === 'Closed' || t.status === 'Resolved';
     
     // Filter active tickets for SLA status
@@ -67,8 +67,8 @@ const Dashboard: React.FC = () => {
           onClick={() => setFilter('all')}
           className={`p-6 rounded-2xl shadow-sm border transition-all duration-300 hover:shadow-md flex flex-col items-center justify-center gap-2 ${filter === 'all' ? 'bg-slate-800 text-white border-slate-900 ring-2 ring-slate-400 ring-offset-2' : 'bg-white text-slate-800 border-slate-200'}`}
         >
-          <div className="text-3xl font-black">{metrics?.total_active || 0}</div>
-          <div className="text-sm font-medium opacity-80 uppercase tracking-wider">Total Active</div>
+          <div className="text-3xl font-black">{tickets.length}</div>
+          <div className="text-sm font-medium opacity-80 uppercase tracking-wider">All Tickets</div>
         </button>
 
         <button 
@@ -114,7 +114,7 @@ const Dashboard: React.FC = () => {
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-8">
         <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
           <h3 className="text-lg font-semibold text-slate-800">
-            {filter === 'all' ? 'All Active Tickets' : `Filtered Tickets: ${filter.toUpperCase()}`}
+            {filter === 'all' ? 'All Tickets' : `Filtered Tickets: ${filter.toUpperCase()}`}
           </h3>
         </div>
         <div className="overflow-x-auto">

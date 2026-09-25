@@ -249,15 +249,16 @@ const TicketDetail: React.FC = () => {
             <div className="h-full flex items-center justify-center text-slate-400 italic">Chưa có tin nhắn nào.</div>
           ) : (
             ticket.messages.map((msg) => {
-              const isAgent = msg.role === MessageRole.AGENT;
+              const isMsgFromAgent = msg.role === MessageRole.AGENT;
+              const isMine = (isAgent && isMsgFromAgent) || (!isAgent && !isMsgFromAgent);
               return (
-                <div key={msg.id} className={`flex gap-3 max-w-[85%] ${isAgent ? 'ml-auto flex-row-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isAgent ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-600'}`}>
-                    {isAgent ? <Bot size={16} /> : <User size={16} />}
+                <div key={msg.id} className={`flex gap-3 max-w-[85%] ${isMine ? 'ml-auto flex-row-reverse' : ''}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${isMsgFromAgent ? 'bg-indigo-100 text-indigo-600' : 'bg-slate-200 text-slate-600'}`}>
+                    {isMsgFromAgent ? <Bot size={16} /> : <User size={16} />}
                   </div>
-                  <div className={`flex flex-col ${isAgent ? 'items-end' : 'items-start'}`}>
+                  <div className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}>
                     <span className="text-xs text-slate-500 mb-1 px-1">{msg.sender_name}</span>
-                    <div className={`p-4 rounded-2xl ${isAgent ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm'}`}>
+                    <div className={`p-4 rounded-2xl ${isMine ? 'bg-indigo-600 text-white rounded-tr-sm' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm'}`}>
                       {msg.content}
                     </div>
                   </div>
