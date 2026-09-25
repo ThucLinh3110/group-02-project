@@ -51,7 +51,7 @@ Nhom-2-AI-Helpdesk-IT-Ticket-Management/
 │   ├── uv.lock
 │   └── .python-version         # Khóa phiên bản Python 3.13
 │
-├── vault/                      # Nguồn tri thức và tài liệu phân tích
+├── docs/                       # Nguồn tri thức và tài liệu phân tích (Project Vault)
 │   ├── 01-Requirements/
 │   ├── 02-Research/
 │   ├── 03-Product/
