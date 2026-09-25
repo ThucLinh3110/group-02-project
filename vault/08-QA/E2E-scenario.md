@@ -35,13 +35,13 @@ Tài liệu này định nghĩa 5 kịch bản kiểm thử End-to-End (E2E) bao
 
 ---
 
-## Kịch bản 4: IT Agent quản lý Knowledge Base và AI học lại (KB CRUD)
+## Kịch bản 4: IT Agent quản lý Knowledge Base và AI học lại (KB Upload)
 **Cho trước (Given)** IT Agent đăng nhập và truy cập trang Quản trị Tri thức (Knowledge Base)  
-**Khi (When)** Agent tạo một bài viết mới: Tiêu đề "Khắc phục lỗi VPN", Nội dung "Khởi động lại Cisco AnyConnect"  
-**Thì (Then)** bài viết được lưu thành công vào Database  
+**Khi (When)** Agent tải lên (upload) một file tài liệu `.txt` có tên "Khac_phuc_loi_VPN.txt" chứa nội dung "Khởi động lại Cisco AnyConnect"  
+**Thì (Then)** hệ thống trích xuất nội dung file và lưu bài viết thành công vào Database  
 **Khi** một khách hàng tạo vé mới với mô tả "Không thể kết nối mạng công ty qua VPN"  
 **Và** IT Agent vào vé bấm "Nhờ AI Gợi Ý"  
-**Thì** AI lập tức đọc được bài viết mới và gợi ý: *"Vui lòng thử khởi động lại Cisco AnyConnect..."*
+**Thì** AI lập tức đọc được tài liệu vừa upload và gợi ý: *"Vui lòng thử khởi động lại Cisco AnyConnect..."*
 
 ---
 
