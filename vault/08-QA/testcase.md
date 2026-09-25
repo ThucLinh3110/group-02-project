@@ -169,3 +169,5 @@ Tài liệu này là kho lưu trữ toàn diện hơn 150 kịch bản kiểm th
 | **TC-163** | Integration state machine trans 13 | STATE | Valid state transition | Automated (Integration) |
 | **TC-164** | Integration state machine trans 14 | STATE | Valid state transition | Automated (Integration) |
 | **TC-165** | Integration state machine trans 15 | STATE | Valid state transition | Automated (Integration) |
+| **TC-166** | UI Chat - Verify sender message alignment | UI-UX | Sender on right, receiver on left | Automated (E2E) |
+| **TC-167** | UI Dashboard - Verify 'All Tickets' filter shows Done tickets | UI-UX | Closed/Resolved tickets are visible | Automated (E2E) |
