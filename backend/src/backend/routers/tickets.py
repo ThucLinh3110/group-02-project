@@ -7,8 +7,9 @@ from sqlalchemy.future import select
 from sqlalchemy import desc
 
 from ..database import get_db
-from ..models import Ticket, Message, TicketStatus, MessageRole
+from ..models import Ticket, Message, TicketStatus, MessageRole, TicketPriority, UserRole, User
 from ..schemas import TicketResponse, TicketDetailResponse, MessageResponse, MessageCreate, TicketUpdate
+from .auth import get_current_user, get_current_agent
 
 router = APIRouter(prefix="/api/tickets", tags=["tickets"])
 
@@ -73,7 +74,12 @@ async def list_tickets(db: AsyncSession = Depends(get_db)):
     return result.scalars().all()
 
 @router.patch("/{ticket_id}", response_model=TicketResponse)
-async def update_ticket(ticket_id: int, ticket_data: TicketUpdate, db: AsyncSession = Depends(get_db)):
+async def update_ticket(
+    ticket_id: int, 
+    ticket_data: TicketUpdate, 
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     result = await db.execute(select(Ticket).where(Ticket.id == ticket_id))
     ticket = result.scalars().first()
     if not ticket:
@@ -82,6 +88,9 @@ async def update_ticket(ticket_id: int, ticket_data: TicketUpdate, db: AsyncSess
     if ticket_data.category:
         ticket.category = ticket_data.category
     if ticket_data.priority:
+        # BR-HD-03: Khách hàng không được sửa priority nếu AI đã gán
+        if current_user.role == UserRole.EMPLOYEE and ticket.priority != TicketPriority.UNASSIGNED:
+            raise HTTPException(status_code=403, detail="Bạn không có quyền thay đổi mức độ ưu tiên sau khi AI đã phân loại.")
         ticket.priority = ticket_data.priority
         from ..services.sla_engine import calculate_sla_due_date
         ticket.sla_due_at = calculate_sla_due_date(ticket.created_at, ticket.priority.value)
@@ -150,7 +159,7 @@ async def add_message(ticket_id: int, message_data: MessageCreate, db: AsyncSess
     return new_message
 
 @router.post("/{ticket_id}/resolve", response_model=TicketResponse)
-async def resolve_ticket(ticket_id: int, db: AsyncSession = Depends(get_db)):
+async def resolve_ticket(ticket_id: int, db: AsyncSession = Depends(get_db), current_agent: User = Depends(get_current_agent)):
     result = await db.execute(select(Ticket).where(Ticket.id == ticket_id))
     ticket = result.scalars().first()
     if not ticket:
@@ -162,7 +171,7 @@ async def resolve_ticket(ticket_id: int, db: AsyncSession = Depends(get_db)):
     return ticket
 
 @router.post("/{ticket_id}/close", response_model=TicketResponse)
-async def close_ticket(ticket_id: int, db: AsyncSession = Depends(get_db)):
+async def close_ticket(ticket_id: int, db: AsyncSession = Depends(get_db), current_agent: User = Depends(get_current_agent)):
     result = await db.execute(select(Ticket).where(Ticket.id == ticket_id))
     ticket = result.scalars().first()
     if not ticket:

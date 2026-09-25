@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from .ai_client import ai_triage_ticket
 from .sla_engine import calculate_sla_due_date
-from ..models import Ticket, TicketCategory, TicketPriority
+from ..models import Ticket, TicketCategory, TicketPriority, Message, MessageRole
 from ..database import AsyncSessionLocal
 
 async def trigger_ai_triage(ticket_id: int):
@@ -34,6 +34,17 @@ async def trigger_ai_triage(ticket_id: int):
         # SLA due date based on created_at and assigned priority
         ticket.sla_due_at = calculate_sla_due_date(ticket.created_at, ticket.priority.value)
         
+        # Q-HD-01: Fallback khi AI sập (Timeout/Error)
+        if triage_result.get("error"):
+            system_msg = Message(
+                ticket_id=ticket.id,
+                sender_id="system",
+                sender_name="System",
+                role=MessageRole.SYSTEM,
+                content="AI đang bận hoặc gặp sự cố, chuyển sang phân công thủ công."
+            )
+            db.add(system_msg)
+            
         await db.commit()
     
 # AI Draft generation for UC-05
