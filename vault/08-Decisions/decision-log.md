@@ -5,4 +5,4 @@
 | DEC-02 | 25/08/2026 | Công cụ quản lý và mã nguồn | Chốt dùng Taiga để quản lý tiến độ (Agile/Kanban) và GitHub để lưu trữ mã nguồn, tài liệu. | Linh & Hoa |
 | DEC-03 | 26/08/2026 | Phân chia vai trò dự án | Chốt vai trò chuyên trách cho 5 thành viên (Product/BA, Engineering, UX/UI, AI/Vault, QA) để đảm bảo phủ kín các luồng công việc. | Cả nhóm |
 | DEC-04 | 27/08/2026 | Công cụ thiết kế UI/UX | Sử dụng Figma để vẽ Prototype và xây dựng Design System. | Ngân |
-| DEC-05 | 28/08/2026 | Lưu trữ tài liệu (Project Vault) | Chốt cấu trúc thư mục tài liệu tập trung trong thư mục `docs/` trên GitHub nhánh main làm chuẩn chung. | Linh |
+| DEC-05 | 28/08/2026 | Lưu trữ tài liệu (Project Vault) | Chốt cấu trúc tài liệu chia làm 2 phần độc lập: thư mục `docs/` (chứa tài liệu tổng quan/bàn giao) và `vault/` (chứa tài liệu chi tiết theo từng phase). | Linh |

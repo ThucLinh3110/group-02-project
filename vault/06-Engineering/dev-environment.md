@@ -51,7 +51,16 @@ Nhom-2-AI-Helpdesk-IT-Ticket-Management/
 │   ├── uv.lock
 │   └── .python-version         # Khóa phiên bản Python 3.13
 │
-├── docs/                       # Nguồn tri thức và tài liệu phân tích (Project Vault)
+├── docs/                       # Tài liệu kỹ thuật bàn giao và tài liệu chung
+│   ├── 00-index.md
+│   ├── PRD.md
+│   ├── ARCHITECTURE.md
+│   ├── API.md
+│   ├── TRACEABILITY.md
+│   ├── team-roles.md
+│   └── AI_USAGE_LOG.md
+│
+├── vault/                      # Nguồn tri thức và tài liệu phân tích (Project Vault)
 │   ├── 01-Requirements/
 │   ├── 02-Research/
 │   ├── 03-Product/
@@ -60,15 +69,6 @@ Nhom-2-AI-Helpdesk-IT-Ticket-Management/
 │   ├── 06-Engineering/
 │   ├── 07-QA/
 │   └── 08-Decisions/
-│
-├── docs/                       # Tài liệu kỹ thuật bàn giao
-│   ├── PRD.md
-│   ├── ARCHITECTURE.md
-│   ├── API.md
-│   ├── DATA_MODEL.md
-│   ├── TRACEABILITY.md
-│   ├── RUNBOOK.md
-│   └── AI_USAGE_LOG.md
 │
 └── .github/
     └── workflows/              # GitHub Actions CI/CD
