@@ -67,8 +67,9 @@ Nhom-2-AI-Helpdesk-IT-Ticket-Management/
 │   ├── 04-User-Stories/
 │   ├── 05-Design/
 │   ├── 06-Engineering/
-│   ├── 07-QA/
-│   └── 08-Decisions/
+│   ├── 07-AI/
+│   ├── 08-QA/
+│   └── 09-Decisions/
 │
 └── .github/
     └── workflows/              # GitHub Actions CI/CD

@@ -17,5 +17,6 @@ Dự án được chia thành 2 thư mục chính:
 - `02-Research/`: Phân tích scope, stakeholders.
 - `03-Product/`: Thuật ngữ hệ thống, business rules.
 - `04-User-Stories/`, `05-Design/`, `06-Engineering/`: Thiết kế chi tiết.
-- `07-QA/`: Test strategy, code review, matrix.
-- `08-Decisions/`: Nhật ký quyết định.
+- `07-AI/`: Đặc tả tính năng AI, Workflow.
+- `08-QA/`: Test strategy, code review, matrix, benchmark.
+- `09-Decisions/`: Nhật ký quyết định.
