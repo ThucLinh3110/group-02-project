@@ -1,6 +1,6 @@
 # 18.28. Output #28 - Bug Report (Critical Level)
 
-## BUG-99 - Tạo duplicate (vé trùng lặp) khi click đúp liên tục vào nút Gửi
+## BUG-99 - Tạo duplicate (vé trùng lặp) khi click liên tục vào nút Gửi
 
 **Summary:**
 Trong luồng Tạo vé hỗ trợ (Create Ticket) và Thêm FAQ, nếu người dùng có mạng chậm và click đúp nhanh nhiều lần vào nút "Gửi", hệ thống sẽ tạo ra nhiều record giống hệt nhau trong Database.
