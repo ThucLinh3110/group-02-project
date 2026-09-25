@@ -100,8 +100,8 @@ async def ai_triage_ticket(description: str) -> Dict[str, Any]:
         result = json.loads(raw_json)
         
         # Scenario A (Low Confidence)
-        if result.get("confidence", 1.0) < 0.7 or len(description.split()) < 4:
-            print("AI LOW CONFIDENCE OR SHORT DESCRIPTION")
+        if result.get("confidence", 1.0) < 0.7:
+            print("AI LOW CONFIDENCE")
             return {
                 "category": "Unknown",
                 "priority": "Unassigned",
