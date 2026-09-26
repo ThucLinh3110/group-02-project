@@ -11,6 +11,7 @@
 
 ## 3. Luật nghiệp vụ (Business Rules)
 * AI chỉ được phép gán nhãn dựa trên 5 Category cố định: `Hardware`, `Software`, `Network`, `Account`, `Other`.
+* AI phải phân loại 4 mức Độ ưu tiên (Priority): Low, Medium, High, Urgent.
 * Đầu ra của AI phải được ép chuẩn theo định dạng JSON Schema.
 * **Thời gian phản hồi tối đa (SLA):** API của AI phải trả kết quả trong vòng dưới 5 giây. Nếu quá 5 giây sẽ bị coi là Timeout.
 
