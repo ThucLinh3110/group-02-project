@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ai-helpdesk-backend
+    env: python
+    region: singapore
+    repo: https://github.com/ThucLinh3110/Nhom-2-AI-Helpdesk-IT-Ticket-Management
+    rootDir: backend
+    buildCommand: uv sync
+    startCommand: uv run uvicorn src.backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.12.0
