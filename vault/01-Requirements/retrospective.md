@@ -1,6 +1,6 @@
 # 18.35. Output #35 - Retrospective / AI Metrics
 
-| Metric[cite: 3] | Kết quả dự án (Tổng hợp từ AI Usage Log) | Ý nghĩa[cite: 3] |
+| Metric | Kết quả dự án  | Ý nghĩa |
 | :--- | :--- | :--- |
 | Requirement-to-story traceability[cite: 3] | 100% requirements mapped (Ánh xạ đầy đủ 5/5 Story trong Traceability Matrix) | Không có Must requirement mồ côi[cite: 3] |
 | Automated critical E2E[cite: 3] | 5/5 API endpoints (Bao phủ bằng Postman + Test Unit mock) | Critical business journeys được bảo vệ[cite: 3] |
